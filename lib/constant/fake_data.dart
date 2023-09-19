@@ -10,7 +10,7 @@ class FakeData {
     category: "men's clothing",
     image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     rating: RatingModel(
-      rate: 3.9,
+      rate: 2,
       count: 120,
     ),
   );
@@ -23,7 +23,7 @@ class FakeData {
     category: "men's clothing",
     image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     rating: RatingModel(
-      rate: 3.9,
+      rate: 5,
       count: 120,
     ),
   );
@@ -36,7 +36,7 @@ class FakeData {
     category: "men's clothing",
     image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     rating: RatingModel(
-      rate: 3.9,
+      rate: 4,
       count: 120,
     ),
   );

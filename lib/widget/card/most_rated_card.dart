@@ -12,85 +12,93 @@ class MostRatedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.black,
-              Colors.white,
-            ],
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 120,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    productModel.title ?? "Product Title",
-                    style: const TextStyle(
-                        fontFamily: "Montserrat",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
-                        color: Colors.white),
-                    overflow: TextOverflow.fade,
-                    softWrap: true,
-                    maxLines: 2,
-                  ),
-                  Text(
-                    "Price : ${productModel.description!} \$",
-                    style: const TextStyle(
-                        fontFamily: "Lato", fontSize: 13, color: Colors.grey),
-                    softWrap: true,
-                    overflow: TextOverflow.fade,
-                    maxLines: 4,
-                  ),
-                  Text(
-                    productModel.description ?? "Product Title",
-                    style: const TextStyle(
-                        fontFamily: "Lato", fontSize: 13, color: Colors.grey),
-                    softWrap: true,
-                    overflow: TextOverflow.fade,
-                    maxLines: 4,
-                  ),
-                  RatingBar.builder(
-                    initialRating: productModel.rating!.rate!,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => const Icon(
-                      FontAwesomeIcons.star,
-                      color: AppColors.blueLight,
+    return Container(
+      decoration: const BoxDecoration(color: Colors.white),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 18),
+            width: MediaQuery.of(context).size.width / 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  productModel.title ?? "Product Title",
+                  style: const TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: Colors.black),
+                  overflow: TextOverflow.fade,
+                  softWrap: true,
+                  maxLines: 2,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  "Price : ${productModel.price!} £",
+                  style: const TextStyle(
+                      fontFamily: "Lato", fontSize: 16, color: Colors.black),
+                  softWrap: true,
+                  overflow: TextOverflow.fade,
+                  maxLines: 4,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  productModel.description ?? "Product description",
+                  style: const TextStyle(
+                      fontFamily: "Lato", fontSize: 12, color: Colors.grey),
+                  softWrap: true,
+                  overflow: TextOverflow.fade,
+                  maxLines: 4,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                RatingBar(
+                  ratingWidget: RatingWidget(
+                    full: const Icon(
+                      FontAwesomeIcons.solidStar,
+                      color: AppColors.darkBlue,
                     ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
-                  )
-                ],
-              ),
+                    half: const Icon(
+                      FontAwesomeIcons.solidStarHalfStroke,
+                      color: AppColors.darkBlue,
+                    ),
+                    empty: const Icon(
+                      FontAwesomeIcons.star,
+                      color: AppColors.darkBlue,
+                    ),
+                  ),
+                  initialRating: productModel.rating!.rate!,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemSize: 12,
+                  ignoreGestures: true,
+                  onRatingUpdate: (rating) {
+                    print(rating);
+                  },
+                )
+              ],
             ),
-            Expanded(
-              child: CachedNetworkImage(
-                imageUrl: productModel.image!,
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-              ),
+          ),
+          Expanded(
+            child: CachedNetworkImage(
+              imageUrl: productModel.image!,
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
