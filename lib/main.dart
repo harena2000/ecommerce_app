@@ -1,8 +1,19 @@
 import 'package:ecommerce_app/navibar/main_page.dart';
+import 'package:ecommerce_app/provider/search_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const EcommerceApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => SearchProvider(),
+        ),
+      ],
+      child: const EcommerceApp(),
+    ),
+  );
 }
 
 class EcommerceApp extends StatelessWidget {

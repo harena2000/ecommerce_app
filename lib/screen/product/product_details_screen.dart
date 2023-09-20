@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/constant/app_assets.dart';
 import 'package:ecommerce_app/constant/app_colors.dart';
@@ -125,9 +126,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   children: [
                     Expanded(
                       child: RoundedTag(
-                        text: widget.productModel.category!,
+                        text: StringUtils.capitalize(
+                            widget.productModel.category!),
                         fillColor: AppColors.darkBlue,
                         foregroundColor: AppColors.darkBlue,
+                        withBorder: true,
                       ),
                     ),
                     const SizedBox(
@@ -220,7 +223,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       fontWeight: FontWeight.w300),
                 ),
                 Text(
-                  widget.productModel.price!.toString(),
+                  "£ ${widget.productModel.price!}",
                   style: const TextStyle(
                     color: AppColors.darkGrey,
                     fontSize: 28,

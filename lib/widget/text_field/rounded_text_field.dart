@@ -9,12 +9,14 @@ class RoundedTextField extends StatefulWidget {
   final Color? textColor;
   final Color? backgroundColor;
   final TextInputType? inputType;
+  final TextInputAction? inputAction;
   final bool? obscureText;
   final bool? enableInput;
   final bool? showSuffix;
   final void Function()? suffixAction;
   final String? Function(String?)? validator;
-  final void Function(String value)? onChange;
+  final Function(String value)? onChange;
+  final Function(String value)? onSubmit;
   final TextEditingController? controller;
 
   const RoundedTextField({
@@ -33,6 +35,8 @@ class RoundedTextField extends StatefulWidget {
     this.controller,
     this.suffixAction,
     this.showSuffix = false,
+    this.onSubmit,
+    this.inputAction = TextInputAction.done,
   });
 
   @override
@@ -49,9 +53,11 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
       scrollPhysics: const BouncingScrollPhysics(),
       validator: (value) => widget.validator!(value),
       onChanged: (value) => widget.onChange!(value),
-      keyboardType: widget.inputType ?? TextInputType.text,
+      onFieldSubmitted: (value) => widget.onSubmit!(value),
+      keyboardType: widget.inputType,
       obscureText: widget.obscureText! ? passwordVisible : widget.obscureText!,
       enabled: widget.enableInput,
+      textInputAction: widget.inputAction,
       decoration: InputDecoration(
         prefixIcon: Icon(
           widget.prefixIcon,

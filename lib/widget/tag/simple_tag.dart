@@ -1,27 +1,24 @@
+import 'package:ecommerce_app/constant/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class RoundedTag extends StatelessWidget {
-  final Color? fillColor;
+class SimpleTag extends StatelessWidget {
+  final Color? backgroundColor;
   final Color? foregroundColor;
-  final bool? filled;
-  final bool? withBorder;
   final String text;
   final TextStyle? textStyle;
   final bool? withIcon;
   final IconData? icon;
   final double? radius;
 
-  const RoundedTag({
+  const SimpleTag({
     super.key,
-    this.fillColor = Colors.grey,
-    this.foregroundColor = Colors.grey,
-    this.filled = false,
+    this.backgroundColor = Colors.grey,
+    this.foregroundColor = Colors.black,
     required this.text,
     this.textStyle,
     this.withIcon = false,
     this.icon = FontAwesomeIcons.x,
-    this.withBorder = false,
     this.radius = 100,
   });
 
@@ -32,13 +29,7 @@ class RoundedTag extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(radius!),
         ),
-        border: Border.all(
-          color: filled!
-              ? Colors.transparent
-              : (withBorder! ? fillColor! : Colors.transparent),
-          width: 0.5,
-        ),
-        color: filled! ? fillColor : Colors.white,
+        color: backgroundColor,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -51,7 +42,7 @@ class RoundedTag extends StatelessWidget {
               text,
               style: textStyle ??
                   TextStyle(
-                    color: filled! ? Colors.white : foregroundColor,
+                    color: foregroundColor,
                     fontSize: 16,
                   ),
             ),
@@ -64,7 +55,7 @@ class RoundedTag extends StatelessWidget {
                   ),
                   Icon(
                     icon!,
-                    color: filled! ? Colors.white : foregroundColor,
+                    color: foregroundColor,
                     size: 10,
                   ),
                 ],
