@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/navibar/main_page.dart';
+import 'package:ecommerce_app/provider/home_provider.dart';
 import 'package:ecommerce_app/provider/search_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,9 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => HomeProvider(),
+        ),
         ChangeNotifierProvider(
           create: (context) => SearchProvider(),
         ),
@@ -30,7 +34,10 @@ class EcommerceApp extends StatelessWidget {
         fontFamily: "Lato",
         useMaterial3: true,
       ),
-      home: const MainPage(),
+      home: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 0.9),
+        child: const MainPage(),
+      ),
     );
   }
 }

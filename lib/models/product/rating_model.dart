@@ -1,6 +1,6 @@
 class RatingModel {
-  double? rate;
-  int? count;
+  num? rate;
+  num? count;
 
   RatingModel({this.rate, this.count});
 

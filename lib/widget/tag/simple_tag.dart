@@ -10,6 +10,7 @@ class SimpleTag extends StatelessWidget {
   final bool? withIcon;
   final IconData? icon;
   final double? radius;
+  final void Function()? onIconPressed;
 
   const SimpleTag({
     super.key,
@@ -20,6 +21,7 @@ class SimpleTag extends StatelessWidget {
     this.withIcon = false,
     this.icon = FontAwesomeIcons.x,
     this.radius = 100,
+    this.onIconPressed,
   });
 
   @override
@@ -53,10 +55,16 @@ class SimpleTag extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  Icon(
-                    icon!,
-                    color: foregroundColor,
-                    size: 10,
+                  SizedBox(
+                    width: 20,
+                    child: IconButton(
+                      onPressed: () => onIconPressed!(),
+                      icon: Icon(
+                        icon!,
+                        color: foregroundColor,
+                        size: 10,
+                      ),
+                    ),
                   ),
                 ],
               ),

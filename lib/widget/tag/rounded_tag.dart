@@ -11,6 +11,7 @@ class RoundedTag extends StatelessWidget {
   final bool? withIcon;
   final IconData? icon;
   final double? radius;
+  final Function()? onIconPressed;
 
   const RoundedTag({
     super.key,
@@ -23,6 +24,7 @@ class RoundedTag extends StatelessWidget {
     this.icon = FontAwesomeIcons.x,
     this.withBorder = false,
     this.radius = 100,
+    this.onIconPressed,
   });
 
   @override
@@ -62,10 +64,16 @@ class RoundedTag extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  Icon(
-                    icon!,
-                    color: filled! ? Colors.white : foregroundColor,
-                    size: 10,
+                  SizedBox(
+                    width: 20,
+                    child: IconButton(
+                      onPressed: () => onIconPressed!(),
+                      icon: Icon(
+                        icon!,
+                        color: filled! ? Colors.white : foregroundColor,
+                        size: 10,
+                      ),
+                    ),
                   ),
                 ],
               ),

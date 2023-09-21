@@ -2,7 +2,7 @@ import 'package:ecommerce_app/constant/app_colors.dart';
 import 'package:ecommerce_app/navibar/page/cart_page.dart';
 import 'package:ecommerce_app/navibar/page/discover_page.dart';
 import 'package:ecommerce_app/navibar/page/home_page.dart';
-import 'package:ecommerce_app/navibar/page/rewards_page.dart';
+import 'package:ecommerce_app/navibar/page/favorite_page.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_clipped_nav_bar/sliding_clipped_nav_bar.dart';
 
@@ -17,7 +17,7 @@ class _MainPageState extends State<MainPage> {
   List<Widget> page = const [
     HomePage(),
     DiscoverPage(),
-    RewardsPage(),
+    FavoritePage(),
     CartPage(),
   ];
 
@@ -67,8 +67,8 @@ class _MainPageState extends State<MainPage> {
             title: 'Discover',
           ),
           BarItem(
-            icon: Icons.wallet_giftcard_sharp,
-            title: 'Rewards',
+            icon: Icons.favorite,
+            title: 'Favorite',
           ),
           BarItem(
             icon: Icons.shopping_cart_sharp,

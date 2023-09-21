@@ -3,7 +3,7 @@ import 'package:ecommerce_app/models/product/rating_model.dart';
 class ProductModel {
   int? id;
   String? title;
-  double? price;
+  num? price;
   String? description;
   String? category;
   String? image;

@@ -6,21 +6,22 @@ import 'package:ecommerce_app/provider/search_provider.dart';
 import 'package:ecommerce_app/screen/product/product_details_screen.dart';
 import 'package:ecommerce_app/widget/card/product_card.dart';
 import 'package:ecommerce_app/widget/tag/rounded_tag.dart';
-import 'package:ecommerce_app/widget/tag/simple_tag.dart';
 import 'package:ecommerce_app/widget/text_field/rounded_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class DiscoverPage extends StatefulWidget {
-  const DiscoverPage({super.key});
+import '../../widget/tag/simple_tag.dart';
+
+class FavoritePage extends StatefulWidget {
+  const FavoritePage({super.key});
 
   @override
-  State<DiscoverPage> createState() => _DiscoverPageState();
+  State<FavoritePage> createState() => _FavoritePageState();
 }
 
-class _DiscoverPageState extends State<DiscoverPage> {
+class _FavoritePageState extends State<FavoritePage> {
   TextEditingController searchController = TextEditingController();
   int actualIndex = 0;
   List<bool> productLiked = [];
@@ -53,8 +54,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            AppColors.deepBlue,
                             AppColors.deepBlueLight,
+                            Colors.white,
                           ],
                         ),
                       ),
@@ -261,7 +262,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                               height: 20,
                             ),
                             const Text(
-                              "Last Viewed",
+                              "Favorite Product",
                               style: TextStyle(
                                 fontFamily: "Montserrat",
                                 fontWeight: FontWeight.w700,
@@ -288,7 +289,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 maxCrossAxisExtent: 200.0,
                 mainAxisSpacing: 0,
                 crossAxisSpacing: 10.0,
-                childAspectRatio: 0.6,
+                childAspectRatio: 0.75,
               ),
               delegate: SliverChildBuilderDelegate((context, index) {
                 return Stack(

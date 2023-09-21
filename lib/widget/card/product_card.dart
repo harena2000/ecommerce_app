@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/widget/image/image_from_network.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce_app/models/product/product_model.dart';
@@ -15,10 +16,10 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CachedNetworkImage(
+        ImageFromNetwork(
           imageUrl: productModel.image!,
           height: 150,
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
         ),
         const SizedBox(
           height: 10,
