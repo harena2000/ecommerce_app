@@ -11,6 +11,8 @@ class HomeProvider with ChangeNotifier {
 
   ProductRequest productRequest = ProductRequest();
 
+  List<ProductModel> get productListReverse => productList.reversed.toList();
+
   void loading(bool isLoading) {
     this.isLoading = isLoading;
     notifyListeners();
@@ -20,22 +22,22 @@ class HomeProvider with ChangeNotifier {
     loading(true);
     productList = await productRequest.getProductsList();
     notifyListeners();
-    updatedProduct = await setUdatedProduct();
-    mostRatedProduct = await setMostRatedProduct();
+    updatedProduct = setUdatedProduct();
+    mostRatedProduct = setMostRatedProduct();
     loading(false);
   }
 
-  Future<List<ProductModel>> setUdatedProduct() async {
+  List<ProductModel> setUdatedProduct() {
     List<ProductModel> list = [];
     for (var i = (productList.length - 1); i >= 0; i--) {
-      if (i >= (productList.length - 4)) {
+      if (i >= (productList.length - 6)) {
         list.add(productList[i]);
       }
     }
     return list;
   }
 
-  Future<List<ProductModel>> setMostRatedProduct() async {
+  List<ProductModel> setMostRatedProduct() {
     List<ProductModel> list = [];
     for (var i = 0; i < productList.length; i++) {
       if (productList[i].rating!.rate! >= 4.0) {

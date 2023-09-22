@@ -26,6 +26,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
   List<bool> productLiked = [];
   int tagSelectedIndex = 0;
 
+  bool seeAll = false;
+
   final _formKey = GlobalKey<FormState>();
   String searchText = "";
 
@@ -290,42 +292,50 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 crossAxisSpacing: 10.0,
                 childAspectRatio: 0.6,
               ),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => ProductDetailsScreen(
-                              productModel: FakeData.productList[index],
+              delegate: SliverChildBuilderDelegate(
+                childCount: searchProvider.allLastViewedProduct.length,
+                (context, index) {
+                  return Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          searchProvider.addToLastViewedProduct(
+                            searchProvider.allLastViewedProduct[index],
+                          );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailsScreen(
+                                productModel:
+                                    searchProvider.allLastViewedProduct[index],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      child: ProductCard(
-                        productModel: FakeData.productList[index],
+                          );
+                        },
+                        child: ProductCard(
+                          productModel:
+                              searchProvider.allLastViewedProduct[index],
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          productLiked[index] = !productLiked[index];
-                        });
-                      },
-                      icon: Icon(
-                        productLiked[index]
-                            ? FontAwesomeIcons.solidHeart
-                            : FontAwesomeIcons.heart,
-                        color: productLiked[index]
-                            ? AppColors.orange
-                            : Colors.grey,
-                      ),
-                    )
-                  ],
-                );
-              }, childCount: FakeData.productList.length),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            productLiked[index] = !productLiked[index];
+                          });
+                        },
+                        icon: Icon(
+                          productLiked[index]
+                              ? FontAwesomeIcons.solidHeart
+                              : FontAwesomeIcons.heart,
+                          color: productLiked[index]
+                              ? AppColors.orange
+                              : Colors.grey,
+                        ),
+                      )
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ],

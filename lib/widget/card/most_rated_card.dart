@@ -2,14 +2,19 @@ import 'package:ecommerce_app/constant/app_colors.dart';
 import 'package:ecommerce_app/models/product/product_model.dart';
 import 'package:ecommerce_app/widget/image/image_from_network.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class MostRatedCard extends StatelessWidget {
+class MostRatedCard extends StatefulWidget {
   final ProductModel productModel;
+  final void Function()? onTap;
 
-  const MostRatedCard({super.key, required this.productModel});
+  const MostRatedCard({super.key, required this.productModel, this.onTap});
 
+  @override
+  State<MostRatedCard> createState() => _MostRatedCardState();
+}
+
+class _MostRatedCardState extends State<MostRatedCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +33,7 @@ class MostRatedCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    productModel.title ?? "Product Title",
+                    widget.productModel.title ?? "Product Title",
                     style: const TextStyle(
                         fontFamily: "Montserrat",
                         fontWeight: FontWeight.w700,
@@ -42,7 +47,7 @@ class MostRatedCard extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    "Price : ${productModel.price!} £",
+                    "Price : ${widget.productModel.price!} £",
                     style: const TextStyle(
                         fontFamily: "Lato", fontSize: 16, color: Colors.black),
                     softWrap: true,
@@ -53,7 +58,7 @@ class MostRatedCard extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    productModel.description ?? "Product description",
+                    widget.productModel.description ?? "Product description",
                     style: const TextStyle(
                         fontFamily: "Lato", fontSize: 12, color: Colors.grey),
                     softWrap: true,
@@ -74,7 +79,7 @@ class MostRatedCard extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        productModel.rating!.rate.toString(),
+                        widget.productModel.rating!.rate.toString(),
                         style: const TextStyle(
                             fontFamily: "Lato",
                             fontSize: 12,
@@ -91,7 +96,7 @@ class MostRatedCard extends StatelessWidget {
             bottom: 10,
             top: 10,
             child: ImageFromNetwork(
-              imageUrl: productModel.image!,
+              imageUrl: widget.productModel.image!,
               width: MediaQuery.of(context).size.width / 2.4,
               height: MediaQuery.of(context).size.height / 2,
               fit: BoxFit.contain,

@@ -8,6 +8,7 @@ class ProductModel {
   String? category;
   String? image;
   RatingModel? rating;
+  bool? isLiked;
 
   ProductModel(
       {this.id,
@@ -16,7 +17,8 @@ class ProductModel {
       this.description,
       this.category,
       this.image,
-      this.rating});
+      this.rating,
+      this.isLiked = false});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,5 +29,10 @@ class ProductModel {
     image = json['image'];
     rating =
         json['rating'] != null ? RatingModel.fromJson(json['rating']) : null;
+    isLiked = false;
+  }
+
+  void changeLikedStatus(bool isLiked) {
+    this.isLiked = isLiked;
   }
 }

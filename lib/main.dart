@@ -1,4 +1,6 @@
 import 'package:ecommerce_app/navibar/main_page.dart';
+import 'package:ecommerce_app/navibar/page/favorite_page.dart';
+import 'package:ecommerce_app/provider/favorite_provider.dart';
 import 'package:ecommerce_app/provider/home_provider.dart';
 import 'package:ecommerce_app/provider/search_provider.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => SearchProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FavoriteProvider(),
         ),
       ],
       child: const EcommerceApp(),

@@ -30,22 +30,6 @@ class _HomePageState extends State<HomePage> {
   bool seeAll = false;
   List<ProductModel> productList = [];
 
-  void updateLikeButton(HomeProvider homeProvider) {
-    if (seeAll) {
-      productLiked =
-          List.generate(homeProvider.productList.length, (index) => false);
-    } else {
-      productLiked =
-          List.generate(homeProvider.updatedProduct.length, (index) => false);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    productLiked = List.generate(4, (index) => false);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer2<HomeProvider, SearchProvider>(
@@ -161,12 +145,21 @@ class _HomePageState extends State<HomePage> {
                                         itemBuilder: (context, index) {
                                           return GestureDetector(
                                             onTap: () {
+                                              SearchProvider searchProvider =
+                                                  Provider.of<SearchProvider>(
+                                                      context,
+                                                      listen: false);
+                                              searchProvider
+                                                  .addToLastViewedProduct(
+                                                homeProvider
+                                                    .mostRatedProduct[index],
+                                              );
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (_) =>
                                                       ProductDetailsScreen(
-                                                    productModel: homeProvider
-                                                            .mostRatedProduct[
+                                                    productModel: searchProvider
+                                                            .allLastViewedProduct[
                                                         index],
                                                   ),
                                                 ),
@@ -223,7 +216,6 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {
                                       setState(() {
                                         seeAll = !seeAll;
-                                        updateLikeButton(homeProvider);
                                       });
                                     },
                                     style: TextButton.styleFrom(
@@ -264,47 +256,30 @@ class _HomePageState extends State<HomePage> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   childCount: seeAll
-                      ? homeProvider.productList.length
+                      ? homeProvider.productListReverse.length
                       : homeProvider.updatedProduct.length,
                   (context, index) {
                     return FadeIn(
-                      child: Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => ProductDetailsScreen(
-                                    productModel: seeAll
-                                        ? homeProvider.productList[index]
-                                        : homeProvider.updatedProduct[index],
-                                  ),
-                                ),
-                              );
-                            },
-                            child: ProductCard(
-                              productModel: seeAll
-                                  ? homeProvider.productList[index]
-                                  : homeProvider.updatedProduct[index],
+                      child: GestureDetector(
+                        onTap: () {
+                          SearchProvider searchProvider =
+                              Provider.of<SearchProvider>(context,
+                                  listen: false);
+                          searchProvider.addToLastViewedProduct(
+                            homeProvider.productListReverse[index],
+                          );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailsScreen(
+                                productModel:
+                                    homeProvider.productListReverse[index],
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                productLiked[index] = !productLiked[index];
-                              });
-                            },
-                            icon: Icon(
-                              productLiked[index]
-                                  ? FontAwesomeIcons.solidHeart
-                                  : FontAwesomeIcons.heart,
-                              color: productLiked[index]
-                                  ? AppColors.orange
-                                  : Colors.grey,
-                            ),
-                          )
-                        ],
+                          );
+                        },
+                        child: ProductCard(
+                            productModel:
+                                homeProvider.productListReverse[index]),
                       ),
                     );
                   },
