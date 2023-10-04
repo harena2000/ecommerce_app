@@ -34,13 +34,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
   RegExp searchHistoryRegExp = RegExp(" ");
 
   @override
-  void initState() {
-    super.initState();
-
-    productLiked = List.generate(FakeData.productList.length, (index) => false);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<SearchProvider>(builder: (context, searchProvider, child) {
       return CustomScrollView(
@@ -203,6 +196,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                                           scrollDirection: Axis.horizontal,
                                           itemCount: searchProvider
                                               .searchHistory.length,
+                                          reverse: true,
                                           itemBuilder: (context, index) {
                                             return FadeIn(
                                               child: Container(
@@ -317,21 +311,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
                               searchProvider.allLastViewedProduct[index],
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            productLiked[index] = !productLiked[index];
-                          });
-                        },
-                        icon: Icon(
-                          productLiked[index]
-                              ? FontAwesomeIcons.solidHeart
-                              : FontAwesomeIcons.heart,
-                          color: productLiked[index]
-                              ? AppColors.orange
-                              : Colors.grey,
-                        ),
-                      )
                     ],
                   );
                 },

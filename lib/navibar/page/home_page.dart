@@ -11,6 +11,7 @@ import 'package:ecommerce_app/widget/card/most_rated_card.dart';
 import 'package:ecommerce_app/widget/card/product_card.dart';
 import 'package:ecommerce_app/widget/text_field/rounded_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -30,10 +31,32 @@ class _HomePageState extends State<HomePage> {
   bool seeAll = false;
   List<ProductModel> productList = [];
 
+  errorFetchingData(String? errorMessage) =>
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: AppColors.orange,
+            content: Text(
+              errorMessage ?? "An error has occured",
+              style: const TextStyle(
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      });
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<HomeProvider, SearchProvider>(
         builder: (context, homeProvider, searchProvider, child) {
+      if (homeProvider.hasError) {
+        errorFetchingData(homeProvider.errorMessage);
+      }
+
       return Skeletonizer(
         enabled: homeProvider.isLoading,
         child: CustomScrollView(
@@ -145,10 +168,6 @@ class _HomePageState extends State<HomePage> {
                                         itemBuilder: (context, index) {
                                           return GestureDetector(
                                             onTap: () {
-                                              SearchProvider searchProvider =
-                                                  Provider.of<SearchProvider>(
-                                                      context,
-                                                      listen: false);
                                               searchProvider
                                                   .addToLastViewedProduct(
                                                 homeProvider
@@ -158,8 +177,8 @@ class _HomePageState extends State<HomePage> {
                                                 MaterialPageRoute(
                                                   builder: (_) =>
                                                       ProductDetailsScreen(
-                                                    productModel: searchProvider
-                                                            .allLastViewedProduct[
+                                                    productModel: homeProvider
+                                                            .mostRatedProduct[
                                                         index],
                                                   ),
                                                 ),
@@ -262,9 +281,6 @@ class _HomePageState extends State<HomePage> {
                     return FadeIn(
                       child: GestureDetector(
                         onTap: () {
-                          SearchProvider searchProvider =
-                              Provider.of<SearchProvider>(context,
-                                  listen: false);
                           searchProvider.addToLastViewedProduct(
                             homeProvider.productListReverse[index],
                           );

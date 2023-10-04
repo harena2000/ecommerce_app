@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:ecommerce_app/api/product_request.dart';
 import 'package:ecommerce_app/models/product/product_model.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,12 @@ class HomeProvider with ChangeNotifier {
   List<ProductModel> productList = [];
   List<ProductModel> mostRatedProduct = [];
 
+  bool hasError = false;
+  String errorMessage = "";
+
   ProductRequest productRequest = ProductRequest();
 
-  List<ProductModel> get productListReverse => productList.reversed.toList();
+  List<ProductModel> productListReverse = [];
 
   void loading(bool isLoading) {
     this.isLoading = isLoading;
@@ -20,9 +24,15 @@ class HomeProvider with ChangeNotifier {
 
   Future<void> getProductList() async {
     loading(true);
-    productList = await productRequest.getProductsList();
+    try {
+      productList = await productRequest.getProductsList();
+    } on DioException catch (error) {
+      hasError = true;
+      errorMessage = error.message!;
+    }
     notifyListeners();
     updatedProduct = setUdatedProduct();
+    productListReverse.addAll(productList.reversed.toList());
     mostRatedProduct = setMostRatedProduct();
     loading(false);
   }

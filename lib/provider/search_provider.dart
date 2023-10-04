@@ -25,6 +25,7 @@ class SearchProvider with ChangeNotifier {
     }
 
     allLastViewedProduct.add(lastViewed);
+    allLastViewedProduct = allLastViewedProduct.reversed.toList();
     notifyListeners();
   }
 

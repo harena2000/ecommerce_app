@@ -24,39 +24,39 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.topRight,
+    return Column(
       children: [
-        Column(
-          children: [
-            ImageFromNetwork(
-              imageUrl: widget.productModel.image!,
-              height: 150,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        ImageFromNetwork(
+          imageUrl: widget.productModel.image!,
+          height: 150,
+          fit: BoxFit.contain,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.productModel.title!,
+                  style: const TextStyle(
+                    fontFamily: "Lato",
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                  softWrap: true,
+                  overflow: TextOverflow.fade,
+                  maxLines: 2,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.productModel.title!,
-                      style: const TextStyle(
-                        fontFamily: "Lato",
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                      softWrap: true,
-                      overflow: TextOverflow.fade,
-                      maxLines: 2,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
                     Text(
                       "£ ${widget.productModel.price!}",
                       style: const TextStyle(
@@ -65,35 +65,40 @@ class _ProductCardState extends State<ProductCard> {
                         fontSize: 14,
                         color: Colors.black,
                       ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        FavoriteProvider favoriteProvider =
+                            Provider.of<FavoriteProvider>(context,
+                                listen: false);
+
+                        if (widget.productModel.isLiked!) {
+                          favoriteProvider
+                              .removeProductFromFavorite(widget.productModel);
+                        } else {
+                          favoriteProvider
+                              .addToFavoriteList(widget.productModel);
+                        }
+
+                        setState(() {
+                          widget.productModel
+                              .changeLikedStatus(!widget.productModel.isLiked!);
+                        });
+                      },
+                      icon: Icon(
+                        widget.productModel.isLiked!
+                            ? FontAwesomeIcons.solidHeart
+                            : FontAwesomeIcons.heart,
+                        color: widget.productModel.isLiked!
+                            ? AppColors.orange
+                            : Colors.grey,
+                        size: 18,
+                      ),
                     )
                   ],
-                ),
-              ),
-            )
-          ],
-        ),
-        IconButton(
-          onPressed: () {
-            FavoriteProvider favoriteProvider =
-                Provider.of<FavoriteProvider>(context, listen: false);
-
-            if (widget.productModel.isLiked!) {
-              favoriteProvider.removeProductFromFavorite(widget.productModel);
-            } else {
-              favoriteProvider.addToFavoriteList(widget.productModel);
-            }
-
-            setState(() {
-              widget.productModel
-                  .changeLikedStatus(!widget.productModel.isLiked!);
-            });
-          },
-          icon: Icon(
-            widget.productModel.isLiked!
-                ? FontAwesomeIcons.solidHeart
-                : FontAwesomeIcons.heart,
-            color:
-                widget.productModel.isLiked! ? AppColors.orange : Colors.grey,
+                )
+              ],
+            ),
           ),
         )
       ],
