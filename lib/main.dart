@@ -1,11 +1,21 @@
+import 'package:ecommerce_app/adapters/favorite/favorite_list.dart';
+import 'package:ecommerce_app/adapters/history/history_list.dart';
+import 'package:ecommerce_app/adapters/product/product_list.dart';
 import 'package:ecommerce_app/navibar/main_page.dart';
 import 'package:ecommerce_app/provider/favorite_provider.dart';
 import 'package:ecommerce_app/provider/home_provider.dart';
 import 'package:ecommerce_app/provider/search_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(ProductListAdapter());
+  Hive.registerAdapter(HistoryListAdapter());
+  Hive.registerAdapter(FavoriteListAdapter());
+
   runApp(
     MultiProvider(
       providers: [

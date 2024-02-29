@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce_app/api/product_request.dart';
 import 'package:ecommerce_app/models/product/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class HomeProvider with ChangeNotifier {
   bool isLoading = false;
@@ -9,6 +10,8 @@ class HomeProvider with ChangeNotifier {
   List<ProductModel> updatedProduct = [];
   List<ProductModel> productList = [];
   List<ProductModel> mostRatedProduct = [];
+
+  late Box localProductList;
 
   bool hasError = false;
   String errorMessage = "";
@@ -23,25 +26,36 @@ class HomeProvider with ChangeNotifier {
   }
 
   Future<void> getProductList() async {
+    localProductList = await Hive.openBox<List<ProductModel>>("productList");
+
     loading(true);
     try {
       productList = await productRequest.getProductsList();
+      notifyListeners();
     } on DioException catch (error) {
       hasError = true;
-      errorMessage = error.message!;
+      notifyListeners();
+    } finally {
+      if (productList.isNotEmpty) {
+        localProductList.clear();
+        localProductList.put("localProductList", productList);
+      }
+      notifyListeners();
+
+      updatedProduct = setUdatedProduct();
+      productListReverse.addAll(productList.reversed.toList());
+      mostRatedProduct = setMostRatedProduct();
+      loading(false);
     }
-    notifyListeners();
-    updatedProduct = setUdatedProduct();
-    productListReverse.addAll(productList.reversed.toList());
-    mostRatedProduct = setMostRatedProduct();
-    loading(false);
   }
 
   List<ProductModel> setUdatedProduct() {
     List<ProductModel> list = [];
-    for (var i = (productList.length - 1); i >= 0; i--) {
-      if (i >= (productList.length - 6)) {
-        list.add(productList[i]);
+    List<ProductModel> localList = localProductList.get("localProductList");
+
+    for (var i = (localList.length - 1); i >= 0; i--) {
+      if (i >= (localList.length - 6)) {
+        list.add(localList[i]);
       }
     }
     return list;
@@ -49,10 +63,11 @@ class HomeProvider with ChangeNotifier {
 
   List<ProductModel> setMostRatedProduct() {
     List<ProductModel> list = [];
-    for (var i = 0; i < productList.length; i++) {
-      if (productList[i].rating!.rate! >= 4.0) {
+    List<ProductModel> localList = localProductList.get("localProductList");
+    for (var i = 0; i < localList.length; i++) {
+      if (localList[i].rating!.rate! >= 4.0) {
         if (list.length < 5) {
-          list.add(productList[i]);
+          list.add(localList[i]);
         }
       }
     }
